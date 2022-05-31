@@ -1,6 +1,6 @@
 # ExpressCrud
 
-##How to run
+## How to run
 
 You need to have db epn_db in mysql admin
 then type
