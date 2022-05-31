@@ -1,0 +1,54 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" type="text/css" href="/css/style.css")
+        title Filmoteka
+    body
+        header Filmoteka
+            p.options 
+                a(href="/") Back
+        .films
+            .film.filmHeader
+                div id
+                div name
+                div type 
+                div img
+                div premiere
+                div delete
+                div edit
+            each film in data 
+                .film 
+                    div=film.id 
+                    div=film.name
+                    div=film.type 
+                    img(src=`${film.img}` alt='zły url')
+                    div=film.premiere
+                    div
+                        a(class="delete" data-articleid=film.id href=`films/${film.id}`) delete
+                    div
+                        a(class="edit" href=`films/edit/${film.id}`) edit
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script().
+        $(document).ready(function(){
+        $('.delete').on('click', function(e){
+        e.preventDefault();
+        $target = $(e.target);
+        const id = $target.attr('data-articleid');
+
+        $.ajax({
+        type: 'DELETE',
+        url: '/films/'+id,
+        success: function (response){
+            window.location="/films"
+        },
+        error: function(err){
+            console.error(err);
+        }
+        });
+        });
+        });
+
+            

@@ -1,0 +1,62 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" type="text/css" href="/css/style.css")
+        title New Film
+    body
+        p.options 
+            a(href="/") Back
+        form(class="editForm" action="/films" method="POST")
+            h1 Edit film with id 
+            label Name:
+                input(type="text" name="name" value=`${data[0].name}`)
+            label type:
+                select(class="type" name="type" value=`${data[0].type}`)
+                    option(value="action") Action 
+                    option(value="animation") Animation 
+                    option(value="sci-fi") Science Fiction 
+                    option(value="fantasy") Fantasy 
+                    option(value="comedy") Comedy 
+                    option(value="thriller") Thriller
+            label img: 
+                input(type="text" name="img" value=`${data[0].img}`)
+            label premiere(yyyy-mm-dd): 
+                input(type="text" name="premiere" value=`${data[0].premiere}`)
+
+
+            button(class="submit" data-articleid=`${data[0].id}` type="submit") Submit
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script().
+        $(document).ready(function(){
+        $(".type option").each(function(){
+            if($(this).attr("value") == $(this).parent().attr("value")){
+                $(this).attr("selected","true")
+            }
+            //$(".type").attr("value")
+        })
+        $('.submit').on('click', function(e){
+        e.preventDefault();
+        $target = $(e.target);
+        var unindexed_data = $(".editForm").serializeArray()
+        var fdata ={}
+        $.map(unindexed_data, function (n,i){
+            fdata[n['name']] = n['value']
+        })
+        const id = $target.attr('data-articleid');
+
+        $.ajax({
+        type: 'PUT',
+        url: '/films/'+id,
+        data: fdata,
+        success: function (response){
+            window.location="/films"
+        },
+        error: function(err){
+            console.error(err);
+        }
+        });
+        });
+        });
